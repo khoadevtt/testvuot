@@ -1,481 +1,430 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio</title>
-    <!-- Link Material Icons from Google Fonts -->
+    <title>Trang Giới Thiệu Bản Thân</title>
+    <!-- Tailwind CSS CDN để dễ dàng styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Material Icons CDN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        /* Import Inter font for a modern look */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-        /* CSS Variables for easy theme customization */
-        :root {
-            --primary-color: #007bff; /* A standard blue */
-            --secondary-color: #6c757d; /* A muted grey */
-            --background-dark: #1a1a2e; /* Dark background for content */
-            --background-light: #f0f2f5; /* Light background (not used much here) */
-            --glass-bg: rgba(255, 255, 255, 0.15); /* Transparent white for glass effect */
-            --glass-border: rgba(255, 255, 255, 0.3); /* Slightly opaque white for border */
-            --text-color-light: #e0e0e0; /* Light text for dark backgrounds */
-            --text-color-dark: #333; /* Dark text for light backgrounds */
-            --active-tab-color: #8be9fd; /* A vibrant light blue/cyan for active states */
-        }
-
-        /* Basic body styling */
+        /* Đảm bảo font Inter được sử dụng */
         body {
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
+            background: linear-gradient(135deg, #a8c0ff, #3f2b96); /* Nền gradient */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Ensure body takes full viewport height */
-            background: linear-gradient(135deg, #2c3e50, #34495e); /* Modern dark gradient background */
-            color: var(--text-color-light); /* Default text color */
-            overflow-x: hidden; /* Prevent horizontal scrolling */
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 80px; /* Khoảng trống cho thanh menu dưới cùng */
+            overflow-x: hidden; /* Ngăn cuộn ngang */
         }
 
-        /* Main container for content */
-        .container {
-            flex-grow: 1; /* Allows content to take available space */
-            padding: 20px;
-            padding-bottom: 100px; /* Space for the fixed bottom navigation menu */
-            max-width: 900px; /* Max width for better readability on large screens */
-            margin: 0 auto; /* Center the container */
-            width: 100%;
-            box-sizing: border-box; /* Include padding in element's total width and height */
-        }
-
-        /* Styling for content sections (About Me, Projects, Contact) */
         .content-section {
-            display: none; /* Hidden by default, shown when active */
-            padding: 30px;
-            background-color: rgba(0, 0, 0, 0.3); /* Slightly transparent dark background */
-            border-radius: 20px; /* Rounded corners for content boxes */
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Subtle shadow for depth */
-            backdrop-filter: blur(5px); /* Frosted glass effect for content */
-            -webkit-backdrop-filter: blur(5px); /* For Safari compatibility */
-            border: 1px solid rgba(255, 255, 255, 0.18); /* Light border for definition */
-            margin-bottom: 20px;
-            animation: fadeIn 0.5s ease-out; /* Fade-in animation when active */
+            background-color: rgba(255, 255, 255, 0.15); /* Nền hơi trong suốt cho nội dung */
+            backdrop-filter: blur(10px); /* Hiệu ứng mờ cho nội dung */
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 90%;
+            width: 800px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: white;
+            text-align: center;
+            display: none; /* Mặc định ẩn tất cả các phần nội dung */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
 
-        /* Class to show the active content section */
         .content-section.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Keyframe animation for fading in content */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Heading styles */
-        h1, h2 {
-            color: var(--active-tab-color); /* Use active tab color for headings */
-            margin-bottom: 20px;
-        }
-
-        /* Paragraph styles */
-        p {
-            line-height: 1.6; /* Improved readability */
-            margin-bottom: 15px;
-        }
-
-        /* List styles */
-        ul {
-            list-style: none; /* Remove default list bullets */
-            padding: 0;
-        }
-
-        ul li {
-            margin-bottom: 10px;
-        }
-
-        /* Navigation Menu Styling */
-        .nav-menu {
-            position: fixed; /* Fixed at the bottom */
-            bottom: 20px; /* 20px from the bottom edge */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust for perfect centering */
-            width: calc(100% - 40px); /* Full width minus 20px padding on each side */
-            max-width: 500px; /* Max width for desktop menu */
-            background: var(--glass-bg); /* Transparent background for liquid glass */
-            border: 1px solid var(--glass-border); /* Light border */
-            border-radius: 50px; /* Highly rounded corners for the menu bar */
-            backdrop-filter: blur(20px) saturate(180%); /* Strong blur and saturation for liquid glass */
-            -webkit-backdrop-filter: blur(20px) saturate(180%); /* For Safari */
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Shadow for depth */
-            display: flex;
-            justify-content: space-around; /* Distribute items evenly */
-            align-items: center;
+        /* Thanh menu Liquid Glass */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content; /* Điều chỉnh chiều rộng theo nội dung */
             padding: 10px 20px;
-            z-index: 1000; /* Ensure it stays on top */
-            box-sizing: border-box;
-            transition: width 0.3s ease; /* Smooth width transition on window resize */
+            border-radius: 50px; /* Bo tròn mạnh */
+            box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            isolation: isolate; /* Quan trọng cho backdrop-filter */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer; /* Cho biết nó là tương tác */
+            -webkit-user-select: none; /* Ngăn chọn văn bản */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: none; /* Ngăn hành vi cuộn mặc định trên touch */
         }
 
-        /* Individual Navigation Item Styling */
+        /* Hiệu ứng kính lỏng cho thanh nav */
+        .liquidGlass-effect {
+            position: absolute;
+            z-index: 0;
+            inset: 0;
+            backdrop-filter: blur(20px); /* Độ mờ cao hơn để tạo hiệu ứng trong suốt */
+            filter: url(#glass-distortion); /* Áp dụng bộ lọc SVG */
+            background: rgba(255, 255, 255, 0.1); /* Nền trong suốt hơn */
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .liquidGlass-shine {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+                        inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+        }
+
+        .nav-items-wrapper {
+            position: relative;
+            z-index: 3; /* Đảm bảo các item nằm trên hiệu ứng kính */
+            display: flex;
+            gap: 20px; /* Khoảng cách giữa các item */
+            padding: 0 10px; /* Padding bên trong wrapper */
+        }
+
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: var(--text-color-light); /* Light text color */
-            text-decoration: none; /* Remove underline */
-            padding: 8px 12px;
-            border-radius: 40px; /* Rounded individual items */
-            transition: transform 0.2s ease-out, background-color 0.3s ease, color 0.3s ease; /* Smooth transitions for hover/active */
-            position: relative; /* For potential future effects or water drop */
-            overflow: hidden; /* Hide overflow for water drop effect */
+            padding: 10px 15px;
+            border-radius: 30px; /* Bo tròn cho từng item */
             cursor: pointer;
-            -webkit-tap-highlight-color: transparent; /* Remove default tap highlight on mobile */
+            transition: transform 0.3s ease-out, background-color 0.3s ease-out;
+            position: relative;
+            color: white; /* Màu chữ mặc định */
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
-        /* Styling for the active navigation item */
-        .nav-item.active {
-            background-color: var(--active-tab-color); /* Highlight active tab */
-            color: var(--background-dark); /* Darker text for active tab */
-            box-shadow: 0 4px 15px rgba(139, 233, 253, 0.4); /* Glow effect for active tab */
-        }
-
-        /* Material Icons within nav items */
         .nav-item .material-icons {
-            font-size: 28px; /* Larger icons */
-            transition: transform 0.2s ease-out, color 0.3s ease; /* Smooth icon movement */
-            will-change: transform; /* Hint to browser for animation optimization */
+            font-size: 28px; /* Kích thước icon mặc định */
+            transition: font-size 0.3s ease-out;
         }
 
-        /* Text labels within nav items */
-        .nav-item span {
-            font-size: 14px;
-            margin-top: 5px;
-            font-weight: 500;
-            white-space: nowrap; /* Prevent text wrapping */
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2); /* Nền hơi sáng khi active */
+        }
+
+        /* Magnifying bubble - bong bóng kính lúp */
+        .magnifying-bubble {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0); /* Ban đầu ẩn và không phóng đại */
+            width: 80px; /* Kích thước ban đầu của bong bóng */
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2); /* Nền hơi trong suốt */
+            backdrop-filter: blur(25px); /* Độ mờ cao hơn cho hiệu ứng phóng đại */
+            filter: url(#glass-distortion); /* Áp dụng bộ lọc SVG */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            pointer-events: none; /* Không chặn sự kiện chuột/chạm */
+            transition: width 0.1s ease-out, height 0.1s ease-out, transform 0.1s ease-out; /* Chuyển động mượt mà */
+            z-index: 1; /* Nằm giữa hiệu ứng kính và các item */
+            opacity: 0;
+        }
+
+        .magnifying-bubble.active {
             opacity: 1;
-            transition: opacity 0.2s ease-out, transform 0.2s ease-out; /* Smooth text movement */
-            will-change: opacity, transform; /* Hint to browser for animation optimization */
+            transform: translate(-50%, -50%) scale(1);
         }
 
-        /* Magnify effect for PC (hover) - using @media (hover: hover) for hover-capable devices */
-        @media (hover: hover) and (pointer: fine) {
-            .nav-item:hover {
-                transform: scale(1.2); /* Slightly scale up on hover */
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .bottom-nav {
+                width: 95%; /* Chiều rộng lớn hơn trên mobile */
+                padding: 8px 15px;
+                bottom: 10px; /* Gần đáy hơn */
             }
-
-            .nav-item:hover .material-icons {
-                transform: translateY(-5px); /* Subtle "water drop" effect: icon moves up */
+            .nav-items-wrapper {
+                gap: 10px;
             }
-
-            .nav-item:hover span {
-                transform: translateY(-5px); /* Subtle "water drop" effect: text moves up */
-            }
-        }
-
-        /* Responsive adjustments for smaller screens (mobile) */
-        @media (max-width: 600px) {
-            .nav-menu {
-                width: calc(100% - 20px); /* Slightly less padding on small screens */
-                bottom: 10px; /* Closer to the bottom edge */
-                padding: 8px 10px;
-            }
-
             .nav-item {
-                padding: 6px 8px;
+                padding: 8px 10px;
+                font-size: 0.8rem;
             }
-
             .nav-item .material-icons {
-                font-size: 24px; /* Smaller icons on mobile */
+                font-size: 24px;
             }
-
-            .nav-item span {
-                font-size: 12px; /* Smaller text on mobile */
+            .content-section {
+                padding: 1.5rem;
+                margin: 1rem auto;
             }
-
-            .container {
-                padding-bottom: 80px; /* Adjust content padding for smaller menu */
-            }
-        }
-
-        /* Water drop effect (applied dynamically via JS for touch/magnify) */
-        .nav-item.magnified .material-icons,
-        .nav-item.magnified span {
-            transform: translateY(-5px); /* Move icon/text up slightly when magnified */
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- About Me Section -->
-        <section id="about-me" class="content-section active">
-            <h2>About Me</h2>
-            <p>Xin chào! Tôi là một nhà phát triển web đầy nhiệt huyết với niềm đam mê tạo ra các trải nghiệm kỹ thuật số đẹp mắt và chức năng. Tôi chuyên về phát triển giao diện người dùng (frontend) và luôn tìm cách học hỏi những công nghệ mới nhất để mang lại các giải pháp sáng tạo.</p>
-            <p>Với kinh nghiệm làm việc trên nhiều dự án khác nhau, tôi tự tin vào khả năng biến ý tưởng thành hiện thực, từ thiết kế đến triển khai. Tôi tin rằng một trang web tốt không chỉ đẹp mà còn phải dễ sử dụng và tối ưu hóa hiệu suất.</p>
-            <p>Ngoài lập trình, tôi thích khám phá những xu hướng công nghệ mới, đọc sách và chơi game.</p>
-        </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="content-section">
-            <h2>My Projects</h2>
-            <p>Dưới đây là một số dự án mà tôi đã thực hiện:</p>
-            <ul>
-                <li><strong>Dự án 1: Ứng dụng Quản lý Nhiệm vụ (Task Management App)</strong>
-                    <p>Một ứng dụng web giúp người dùng quản lý các nhiệm vụ hàng ngày của họ. Được xây dựng với HTML, CSS, JavaScript và sử dụng Local Storage để lưu trữ dữ liệu.</p>
-                </li>
-                <li><strong>Dự án 2: Trang web Thương mại Điện tử Đơn giản (Simple E-commerce Site)</strong>
-                    <p>Một trang web giới thiệu sản phẩm với giỏ hàng cơ bản, được phát triển bằng HTML, CSS và JavaScript. Tập trung vào trải nghiệm người dùng và thiết kế đáp ứng.</p>
-                </li>
-                <li><strong>Dự án 3: Trò chơi Web (Web Game)</strong>
-                    <p>Một trò chơi nhỏ được phát triển hoàn toàn trên trình duyệt, sử dụng Canvas API để vẽ đồ họa và JavaScript cho logic trò chơi.</p>
-                </li>
-            </ul>
-            <p>Bạn có thể xem mã nguồn và bản demo của các dự án này trên GitHub của tôi.</p>
-        </section>
+    <!-- SVG Filter cho hiệu ứng Liquid Glass -->
+    <svg width="0" height="0" style="position: absolute; z-index: -1;">
+        <filter id="glass-distortion">
+            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="5" seed="0" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="50" xChannelSelector="R" yChannelSelector="G" result="distortion" />
+            <feGaussianBlur in="distortion" stdDeviation="0.5" result="blurredDistortion" />
+            <feComposite in="SourceGraphic" in2="blurredDistortion" operator="atop" />
+        </filter>
+    </svg>
 
-        <!-- Contact Me Section -->
-        <section id="contact" class="content-section">
-            <h2>Contact Me</h2>
-            <p>Bạn có thể liên hệ với tôi qua các kênh sau:</p>
-            <ul>
-                <li><strong>Email:</strong> <a href="mailto:your.email@example.com" style="color: var(--active-tab-color); text-decoration: none;">your.email@example.com</a></li>
-                <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/yourprofile" target="_blank" style="color: var(--active-tab-color); text-decoration: none;">linkedin.com/in/yourprofile</a></li>
-                <li><strong>GitHub:</strong> <a href="https://github.com/yourusername" target="_blank" style="color: var(--active-tab-color); text-decoration: none;">github.com/yourusername</a></li>
-            </ul>
-            <p>Tôi rất mong nhận được phản hồi hoặc cơ hội hợp tác từ bạn!</p>
-        </section>
+    <!-- Các phần nội dung -->
+    <div id="about-me" class="content-section active">
+        <h1 class="text-4xl font-bold mb-4">Chào mừng đến với trang của tôi!</h1>
+        <p class="text-lg mb-4">Tôi là [Tên của bạn], một nhà phát triển web với niềm đam mê tạo ra các trải nghiệm kỹ thuật số đẹp mắt và chức năng.</p>
+        <p>Tôi chuyên về phát triển front-end, với kinh nghiệm về HTML, CSS, JavaScript và các framework hiện đại. Tôi luôn tìm kiếm những thử thách mới và cơ hội để học hỏi và phát triển.</p>
+        <img src="https://placehold.co/400x200/000000/FFFFFF?text=Ảnh+của+bạn" alt="Ảnh cá nhân" class="rounded-lg mx-auto my-6 shadow-lg">
+        <p>Trong thời gian rảnh rỗi, tôi thích đọc sách, khám phá thiên nhiên và thử nghiệm các công nghệ mới.</p>
     </div>
 
-    <!-- Navigation Menu -->
-    <nav class="nav-menu">
-        <a href="#about-me" class="nav-item active" data-section="about-me">
-            <span class="material-icons">person</span>
-            <span>About Me</span>
-        </a>
-        <a href="#projects" class="nav-item" data-section="projects">
-            <span class="material-icons">work</span>
-            <span>Projects</span>
-        </a>
-        <a href="#contact" class="nav-item" data-section="contact">
-            <span class="material-icons">mail</span>
-            <span>Contact</span>
-        </a>
+    <div id="projects" class="content-section">
+        <h1 class="text-4xl font-bold mb-4">Dự án của tôi</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold mb-2">Dự án 1: Ứng dụng Quản lý Nhiệm vụ</h3>
+                <p class="text-base">Một ứng dụng web đầy đủ tính năng để quản lý các nhiệm vụ hàng ngày, được xây dựng với Vanilla JavaScript và lưu trữ cục bộ.</p>
+                <a href="#" class="text-blue-300 hover:underline mt-2 inline-block">Xem chi tiết</a>
+            </div>
+            <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold mb-2">Dự án 2: Trang web Thương mại điện tử</h3>
+                <p class="text-base">Một giao diện người dùng thương mại điện tử đáp ứng, hiển thị các sản phẩm và giỏ hàng, sử dụng Tailwind CSS.</p>
+                <a href="#" class="text-blue-300 hover:underline mt-2 inline-block">Xem chi tiết</a>
+            </div>
+            <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold mb-2">Dự án 3: Trò chơi đơn giản</h3>
+                <p class="text-base">Một trò chơi nhỏ được phát triển bằng HTML Canvas và JavaScript, thể hiện các kỹ năng hoạt hình và tương tác.</p>
+                <a href="#" class="text-blue-300 hover:underline mt-2 inline-block">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="content-section">
+        <h1 class="text-4xl font-bold mb-4">Liên hệ với tôi</h1>
+        <p class="text-lg mb-4">Bạn có thể liên hệ với tôi qua các kênh sau:</p>
+        <ul class="list-none p-0 text-left mx-auto max-w-sm">
+            <li class="mb-3 flex items-center justify-center">
+                <span class="material-icons mr-2">email</span>
+                <a href="mailto:your.email@example.com" class="text-blue-300 hover:underline">your.email@example.com</a>
+            </li>
+            <li class="mb-3 flex items-center justify-center">
+                <span class="material-icons mr-2">phone</span>
+                <a href="tel:+1234567890" class="text-blue-300 hover:underline">+123 456 7890</a>
+            </li>
+            <li class="mb-3 flex items-center justify-center">
+                <span class="material-icons mr-2">linkedin</span>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-blue-300 hover:underline">LinkedIn Profile</a>
+            </li>
+            <li class="mb-3 flex items-center justify-center">
+                <span class="material-icons mr-2">code</span>
+                <a href="https://github.com/yourusername" target="_blank" class="text-blue-300 hover:underline">GitHub Profile</a>
+            </li>
+        </ul>
+        <p class="mt-6 text-base">Tôi mong muốn được nghe từ bạn!</p>
+    </div>
+
+    <!-- Thanh menu cố định ở đáy -->
+    <nav class="bottom-nav">
+        <div class="liquidGlass-effect"></div>
+        <div class="liquidGlass-shine"></div>
+        <div class="magnifying-bubble"></div> <!-- Bong bóng kính lúp di chuyển -->
+
+        <div class="nav-items-wrapper" id="navItemsWrapper">
+            <div class="nav-item" data-target="about-me">
+                <span class="material-icons">person</span>
+                <span>About Me</span>
+            </div>
+            <div class="nav-item" data-target="projects">
+                <span class="material-icons">folder_open</span>
+                <span>Projects</span>
+            </div>
+            <div class="nav-item" data-target="contact">
+                <span class="material-icons">mail</span>
+                <span>Contact</span>
+            </div>
+        </div>
     </nav>
 
     <script>
-        // Get references to DOM elements
-        const navMenu = document.querySelector('.nav-menu');
+        const navItemsWrapper = document.getElementById('navItemsWrapper');
         const navItems = document.querySelectorAll('.nav-item');
         const contentSections = document.querySelectorAll('.content-section');
+        const magnifyingBubble = document.querySelector('.magnifying-bubble');
 
-        // Keep track of the currently active navigation item
-        let activeNavItem = document.querySelector('.nav-item.active');
-        // Store the current touch X coordinate for mobile magnification
-        let currentTouchX = null;
-        // Animation frame ID for requestAnimationFrame, to control animation loop
+        let activeTab = 'about-me'; // Tab mặc định
+        let currentMagnifiedItem = null;
         let animationFrameId = null;
-        // Track the last item that was magnified for haptic feedback to prevent repeated vibrations
-        let lastMagnifiedItem = null;
 
-        /**
-         * Updates the displayed content section based on the provided section ID.
-         * @param {string} sectionId - The ID of the content section to display.
-         */
-        function updateContent(sectionId) {
-            // Hide all content sections
+        // Hàm để hiển thị nội dung tab
+        function showContent(targetId) {
             contentSections.forEach(section => {
                 section.classList.remove('active');
             });
-            // Show the target content section
-            document.getElementById(sectionId).classList.add('active');
-        }
-
-        // Add click event listeners to each navigation item
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent default link behavior (page reload)
-                const sectionId = item.dataset.section; // Get the target section ID from data-section attribute
-                updateContent(sectionId); // Update content
-
-                // Update active class for navigation items
-                if (activeNavItem) {
-                    activeNavItem.classList.remove('active'); // Remove active class from previous item
-                }
-                item.classList.add('active'); // Add active class to the clicked item
-                activeNavItem = item; // Set the new active item
-
-                // Reset magnification on click if it was active (important for desktop)
-                navItems.forEach(ni => {
-                    ni.style.transform = 'scale(1)'; // Reset scale
-                    ni.classList.remove('magnified'); // Remove magnified class
-                    ni.querySelector('.material-icons').style.transform = ''; // Reset icon transform
-                    ni.querySelector('span').style.transform = ''; // Reset text transform
-                });
-            });
-        });
-
-        // --- Magnification Effect Logic ---
-
-        /**
-         * Calculates the absolute distance between a pointer's X coordinate and the center of an element.
-         * @param {HTMLElement} element - The DOM element.
-         * @param {number} pointerX - The X coordinate of the pointer (mouse or touch).
-         * @returns {number} The distance.
-         */
-        function getDistance(element, pointerX) {
-            const rect = element.getBoundingClientRect(); // Get element's size and position
-            const elementCenterX = rect.left + rect.width / 2; // Calculate element's center X
-            return Math.abs(pointerX - elementCenterX); // Return absolute distance
-        }
-
-        /**
-         * Animates the magnification effect on navigation items based on pointer position.
-         * Uses requestAnimationFrame for smooth updates.
-         * @param {number} pointerX - The current X coordinate of the pointer.
-         */
-        function animateMagnification(pointerX) {
-            let closestItem = null;
-            let minDistance = Infinity; // To find the closest item
+            document.getElementById(targetId).classList.add('active');
 
             navItems.forEach(item => {
-                const distance = getDistance(item, pointerX);
-                // Define the maximum distance from the pointer for an item to be magnified
-                const maxDistance = navMenu.offsetWidth / 4; // Magnify items within 1/4 of menu width
-
-                let scale = 1;
-                let iconTranslateY = 0;
-                let textTranslateY = 0;
-
-                // Apply magnification if within range
-                if (distance < maxDistance) {
-                    // Calculate scale: closer = larger (max scale 1.3)
-                    scale = 1 + 0.3 * (1 - (distance / maxDistance));
-                    // Calculate "water drop" effect: icon/text moves up when magnified (max -5px)
-                    iconTranslateY = -5 * (1 - (distance / maxDistance));
-                    textTranslateY = -5 * (1 - (distance / maxDistance));
+                item.classList.remove('active');
+                if (item.dataset.target === targetId) {
+                    item.classList.add('active');
                 }
+            });
+            activeTab = targetId;
+        }
 
-                // Apply calculated transforms
-                item.style.transform = `scale(${scale})`;
-                item.querySelector('.material-icons').style.transform = `translateY(${iconTranslateY}px)`;
-                item.querySelector('span').style.transform = `translateY(${textTranslateY}px)`;
+        // Hàm rung nhẹ (Haptic feedback)
+        function vibratePhone() {
+            if (navigator.vibrate) {
+                navigator.vibrate(50); // Rung 50ms
+            }
+        }
 
-                // Determine the closest item for haptic feedback
+        // Cập nhật vị trí và kích thước bong bóng kính lúp
+        function updateMagnifyingBubble(clientX, clientY) {
+            let closestItem = null;
+            let minDistance = Infinity;
+
+            navItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const itemCenterX = rect.left + rect.width / 2;
+                const itemCenterY = rect.top + rect.height / 2;
+
+                const distance = Math.sqrt(
+                    Math.pow(clientX - itemCenterX, 2) +
+                    Math.pow(clientY - itemCenterY, 2)
+                );
+
                 if (distance < minDistance) {
                     minDistance = distance;
                     closestItem = item;
                 }
             });
 
-            // Handle haptic feedback for mobile devices if supported
-            if (closestItem && closestItem !== lastMagnifiedItem && 'vibrate' in navigator) {
-                try {
-                    navigator.vibrate(50); // Vibrate for 50 milliseconds
-                } catch (e) {
-                    console.error("Vibration API error:", e);
-                }
-                lastMagnifiedItem = closestItem; // Update last magnified item
-            }
-        }
+            if (closestItem) {
+                const rect = closestItem.getBoundingClientRect();
+                const navRect = navItemsWrapper.getBoundingClientRect();
 
-        /**
-         * Resets all navigation items to their default (unmagnified) state.
-         * Cancels any ongoing animation frame.
-         */
-        function resetMagnification() {
-            navItems.forEach(item => {
-                item.style.transform = 'scale(1)'; // Reset scale
-                item.querySelector('.material-icons').style.transform = ''; // Reset icon transform
-                item.querySelector('span').style.transform = ''; // Reset text transform
-                item.classList.remove('magnified'); // Remove magnified class
-            });
-            lastMagnifiedItem = null; // Reset for haptic feedback
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId); // Cancel ongoing animation frame
-                animationFrameId = null;
-            }
-        }
+                // Tính toán vị trí tương đối của bong bóng trong navItemsWrapper
+                const bubbleX = (rect.left + rect.width / 2) - navRect.left;
+                const bubbleY = (rect.top + rect.height / 2) - navRect.top;
 
-        // --- Desktop (Hover) Events ---
-        navMenu.addEventListener('mousemove', (e) => {
-            // Check if the device supports fine pointer (typically desktop)
-            if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                // Use requestAnimationFrame to ensure smooth animation
-                if (!animationFrameId) {
-                    animationFrameId = requestAnimationFrame(() => {
-                        animateMagnification(e.clientX); // Animate based on mouse X position
-                        animationFrameId = null; // Reset ID for next frame
-                    });
-                }
-            }
-        });
+                magnifyingBubble.style.left = `${bubbleX}px`;
+                magnifyingBubble.style.top = `${bubbleY}px`;
 
-        navMenu.addEventListener('mouseleave', () => {
-            // Reset magnification when mouse leaves the menu on desktop
-            if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                resetMagnification();
-            }
-        });
+                // Kích thước bong bóng dựa trên kích thước item
+                const scaleFactor = 1.3; // Phóng đại 30%
+                magnifyingBubble.style.width = `${rect.width * scaleFactor}px`;
+                magnifyingBubble.style.height = `${rect.height * scaleFactor}px`;
 
-        // --- Mobile (Touch) Events ---
-        navMenu.addEventListener('touchstart', (e) => {
-            // Only proceed if a single touch is detected
-            if (e.touches.length === 1) {
-                currentTouchX = e.touches[0].clientX; // Store initial touch X
-                lastMagnifiedItem = null; // Reset for a new touch sequence
-            }
-        });
-
-        navMenu.addEventListener('touchmove', (e) => {
-            // Only proceed if a single touch is detected
-            if (e.touches.length === 1) {
-                currentTouchX = e.touches[0].clientX; // Update current touch X
-                // Use requestAnimationFrame for smooth animation during touchmove
-                if (!animationFrameId) {
-                    animationFrameId = requestAnimationFrame(() => {
-                        animateMagnification(currentTouchX); // Animate based on touch X position
-                        animationFrameId = null; // Reset ID for next frame
-                    });
-                }
-                e.preventDefault(); // Prevent page scrolling while dragging on the menu
-            }
-        }, { passive: false }); // Use passive: false to allow preventDefault
-
-        navMenu.addEventListener('touchend', () => {
-            resetMagnification(); // Reset magnification when touch ends
-            if (currentTouchX !== null) {
-                // Determine the closest item to the last touch position and activate it
-                let closestItem = null;
-                let minDistance = Infinity;
-
+                // Phóng đại icon và text của item gần nhất
                 navItems.forEach(item => {
-                    const distance = getDistance(item, currentTouchX);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestItem = item;
+                    if (item === closestItem) {
+                        item.style.transform = `scale(${scaleFactor})`;
+                        item.querySelector('.material-icons').style.fontSize = `${28 * scaleFactor}px`;
+                        vibratePhone(); // Rung khi phóng đại trên mobile
+                    } else {
+                        item.style.transform = 'scale(1)';
+                        item.querySelector('.material-icons').style.fontSize = '28px';
                     }
                 });
 
-                if (closestItem) {
-                    // Programmatically "click" the closest item to trigger content change
-                    closestItem.click();
-                }
-                currentTouchX = null; // Clear touch position
+                currentMagnifiedItem = closestItem;
+                magnifyingBubble.classList.add('active');
+            } else {
+                // Nếu không có item nào gần, ẩn bong bóng và reset scale
+                magnifyingBubble.classList.remove('active');
+                navItems.forEach(item => {
+                    item.style.transform = 'scale(1)';
+                    item.querySelector('.material-icons').style.fontSize = '28px';
+                });
+                currentMagnifiedItem = null;
             }
+        }
+
+        // Reset hiệu ứng phóng đại
+        function resetMagnification() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            magnifyingBubble.classList.remove('active');
+            navItems.forEach(item => {
+                item.style.transform = 'scale(1)';
+                item.querySelector('.material-icons').style.fontSize = '28px';
+            });
+            currentMagnifiedItem = null;
+        }
+
+        // Xử lý sự kiện chuột (Desktop)
+        navItemsWrapper.addEventListener('mousemove', (e) => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            animationFrameId = requestAnimationFrame(() => {
+                updateMagnifyingBubble(e.clientX, e.clientY);
+            });
         });
 
-        navMenu.addEventListener('touchcancel', () => {
-            resetMagnification(); // Reset magnification if touch is cancelled
-            currentTouchX = null; // Clear touch position
+        navItemsWrapper.addEventListener('mouseleave', () => {
+            resetMagnification();
         });
 
-        // Initial content load when the DOM is fully loaded
+        // Xử lý sự kiện chạm (Mobile)
+        navItemsWrapper.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Ngăn hành vi cuộn mặc định
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            animationFrameId = requestAnimationFrame(() => {
+                updateMagnifyingBubble(e.touches[0].clientX, e.touches[0].clientY);
+            });
+        }, { passive: false }); // Sử dụng { passive: false } để có thể gọi preventDefault
+
+        navItemsWrapper.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Ngăn hành vi cuộn mặc định
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            animationFrameId = requestAnimationFrame(() => {
+                updateMagnifyingBubble(e.touches[0].clientX, e.touches[0].clientY);
+            });
+        }, { passive: false });
+
+        navItemsWrapper.addEventListener('touchend', () => {
+            if (currentMagnifiedItem) {
+                showContent(currentMagnifiedItem.dataset.target);
+            }
+            resetMagnification();
+        });
+
+        // Xử lý sự kiện click (Desktop)
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                showContent(item.dataset.target);
+                resetMagnification(); // Đảm bảo reset sau khi click
+            });
+        });
+
+        // Khởi tạo tab mặc định khi tải trang
         document.addEventListener('DOMContentLoaded', () => {
-            const initialSectionId = activeNavItem.dataset.section; // Get the ID of the initially active section
-            updateContent(initialSectionId); // Display the initial content
+            showContent(activeTab);
         });
-
     </script>
 </body>
 </html>
