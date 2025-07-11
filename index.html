@@ -1,429 +1,569 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Giới Thiệu Bản Thân</title>
-    <!-- Tailwind CSS CDN để dễ dàng styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Material Icons CDN -->
+    <title>My Personal Website</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* Đảm bảo font Inter được sử dụng */
+        /* RESET AND BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #a8c0ff, #3f2b96); /* Nền gradient */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 80px; /* Khoảng trống cho thanh menu dưới cùng */
-            overflow-x: hidden; /* Ngăn cuộn ngang */
+            overflow-x: hidden;
         }
-
-        .content-section {
-            background-color: rgba(255, 255, 255, 0.15); /* Nền hơi trong suốt cho nội dung */
-            backdrop-filter: blur(10px); /* Hiệu ứng mờ cho nội dung */
-            border-radius: 20px;
+        
+        /* CONTENT SECTION */
+        .content {
+            flex: 1;
             padding: 2rem;
-            margin: 2rem auto;
-            max-width: 90%;
-            width: 800px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            color: white;
-            text-align: center;
-            display: none; /* Mặc định ẩn tất cả các phần nội dung */
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            padding-bottom: 100px; /* Space for fixed menu */
+            transition: transform 0.3s ease;
         }
-
-        .content-section.active {
+        
+        .page {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
             display: block;
-            opacity: 1;
-            transform: translateY(0);
         }
-
-        /* Thanh menu Liquid Glass */
-        .bottom-nav {
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        /* LIQUID GLASS MENU */
+        .menu-container {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: fit-content; /* Điều chỉnh chiều rộng theo nội dung */
-            padding: 10px 20px;
-            border-radius: 50px; /* Bo tròn mạnh */
-            box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            isolation: isolate; /* Quan trọng cho backdrop-filter */
+            bottom: 0;
+            left: 0;
+            right: 0;
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            cursor: pointer; /* Cho biết nó là tương tác */
-            -webkit-user-select: none; /* Ngăn chọn văn bản */
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            touch-action: none; /* Ngăn hành vi cuộn mặc định trên touch */
+            justify-content: center;
+            padding: 1rem 0;
+            z-index: 100;
         }
-
-        /* Hiệu ứng kính lỏng cho thanh nav */
-        .liquidGlass-effect {
-            position: absolute;
-            z-index: 0;
-            inset: 0;
-            backdrop-filter: blur(20px); /* Độ mờ cao hơn để tạo hiệu ứng trong suốt */
-            filter: url(#glass-distortion); /* Áp dụng bộ lọc SVG */
-            background: rgba(255, 255, 255, 0.1); /* Nền trong suốt hơn */
-            border-radius: 50px;
-            overflow: hidden;
-        }
-
-        .liquidGlass-shine {
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            overflow: hidden;
-            box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
-                        inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
-            border-radius: 50px;
-        }
-
-        .nav-items-wrapper {
+        
+        .liquidGlass-menu {
+            display: flex;
             position: relative;
-            z-index: 3; /* Đảm bảo các item nằm trên hiệu ứng kính */
-            display: flex;
-            gap: 20px; /* Khoảng cách giữa các item */
-            padding: 0 10px; /* Padding bên trong wrapper */
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 
+                        0 0 10px rgba(255, 255, 255, 0.5) inset;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
         }
-
-        .nav-item {
+        
+        .menu-item {
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 10px 15px;
-            border-radius: 30px; /* Bo tròn cho từng item */
+            width: 80px;
+            height: 60px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: transform 0.3s ease-out, background-color 0.3s ease-out;
-            position: relative;
-            color: white; /* Màu chữ mặc định */
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+            color: #2c3e50;
+            text-decoration: none;
+            user-select: none;
         }
-
-        .nav-item .material-icons {
-            font-size: 28px; /* Kích thước icon mặc định */
-            transition: font-size 0.3s ease-out;
+        
+        .menu-item .material-icons {
+            font-size: 24px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .nav-item.active {
-            background-color: rgba(255, 255, 255, 0.2); /* Nền hơi sáng khi active */
+        
+        .menu-item .label {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0.8;
         }
-
-        /* Magnifying bubble - bong bóng kính lúp */
-        .magnifying-bubble {
+        
+        /* MAGNIFY EFFECT */
+        .magnifier {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0); /* Ban đầu ẩn và không phóng đại */
-            width: 80px; /* Kích thước ban đầu của bong bóng */
-            height: 80px;
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2); /* Nền hơi trong suốt */
-            backdrop-filter: blur(25px); /* Độ mờ cao hơn cho hiệu ứng phóng đại */
-            filter: url(#glass-distortion); /* Áp dụng bộ lọc SVG */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            pointer-events: none; /* Không chặn sự kiện chuột/chạm */
-            transition: width 0.1s ease-out, height 0.1s ease-out, transform 0.1s ease-out; /* Chuyển động mượt mà */
-            z-index: 1; /* Nằm giữa hiệu ứng kính và các item */
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.2s ease-out;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1),
+                        0 0 10px rgba(255, 255, 255, 0.8) inset;
+            z-index: 1;
             opacity: 0;
         }
-
-        .magnifying-bubble.active {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+        
+        .menu-item.active {
+            color: #3498db;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .bottom-nav {
-                width: 95%; /* Chiều rộng lớn hơn trên mobile */
-                padding: 8px 15px;
-                bottom: 10px; /* Gần đáy hơn */
+        
+        .menu-item.active .material-icons {
+            transform: scale(1.2);
+        }
+        
+        .menu-item.active .label {
+            opacity: 1;
+            font-weight: 600;
+        }
+        
+        /* LIQUID DROP EFFECT */
+        .liquid-drop {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 0;
+        }
+        
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+        
+        .shake {
+            animation: shake 0.2s ease;
+        }
+        
+        /* PROJECT STYLES */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-card h3 {
+            margin-bottom: 0.5rem;
+            color: #3498db;
+        }
+        
+        /* CONTACT FORM */
+        .contact-form {
+            max-width: 500px;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 600px) {
+            .content {
+                padding: 1rem;
+                padding-bottom: 100px;
             }
-            .nav-items-wrapper {
-                gap: 10px;
+            
+            .liquidGlass-menu {
+                padding: 8px;
             }
-            .nav-item {
-                padding: 8px 10px;
-                font-size: 0.8rem;
-            }
-            .nav-item .material-icons {
-                font-size: 24px;
-            }
-            .content-section {
-                padding: 1.5rem;
-                margin: 1rem auto;
+            
+            .menu-item {
+                width: 70px;
+                height: 50px;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- SVG Filter cho hiệu ứng Liquid Glass -->
-    <svg width="0" height="0" style="position: absolute; z-index: -1;">
-        <filter id="glass-distortion">
-            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="5" seed="0" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="50" xChannelSelector="R" yChannelSelector="G" result="distortion" />
-            <feGaussianBlur in="distortion" stdDeviation="0.5" result="blurredDistortion" />
-            <feComposite in="SourceGraphic" in2="blurredDistortion" operator="atop" />
-        </filter>
-    </svg>
-
-    <!-- Các phần nội dung -->
-    <div id="about-me" class="content-section active">
-        <h1 class="text-4xl font-bold mb-4">Chào mừng đến với trang của tôi!</h1>
-        <p class="text-lg mb-4">Tôi là [Tên của bạn], một nhà phát triển web với niềm đam mê tạo ra các trải nghiệm kỹ thuật số đẹp mắt và chức năng.</p>
-        <p>Tôi chuyên về phát triển front-end, với kinh nghiệm về HTML, CSS, JavaScript và các framework hiện đại. Tôi luôn tìm kiếm những thử thách mới và cơ hội để học hỏi và phát triển.</p>
-        <img src="https://placehold.co/400x200/000000/FFFFFF?text=Ảnh+của+bạn" alt="Ảnh cá nhân" class="rounded-lg mx-auto my-6 shadow-lg">
-        <p>Trong thời gian rảnh rỗi, tôi thích đọc sách, khám phá thiên nhiên và thử nghiệm các công nghệ mới.</p>
-    </div>
-
-    <div id="projects" class="content-section">
-        <h1 class="text-4xl font-bold mb-4">Dự án của tôi</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md">
-                <h3 class="text-2xl font-semibold mb-2">Dự án 1: Ứng dụng Quản lý Nhiệm vụ</h3>
-                <p class="text-base">Một ứng dụng web đầy đủ tính năng để quản lý các nhiệm vụ hàng ngày, được xây dựng với Vanilla JavaScript và lưu trữ cục bộ.</p>
-                <a href="#" class="text-blue-300 hover:underline mt-2 inline-block">Xem chi tiết</a>
-            </div>
-            <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md">
-                <h3 class="text-2xl font-semibold mb-2">Dự án 2: Trang web Thương mại điện tử</h3>
-                <p class="text-base">Một giao diện người dùng thương mại điện tử đáp ứng, hiển thị các sản phẩm và giỏ hàng, sử dụng Tailwind CSS.</p>
-                <a href="#" class="text-blue-300 hover:underline mt-2 inline-block">Xem chi tiết</a>
-            </div>
-            <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md">
-                <h3 class="text-2xl font-semibold mb-2">Dự án 3: Trò chơi đơn giản</h3>
-                <p class="text-base">Một trò chơi nhỏ được phát triển bằng HTML Canvas và JavaScript, thể hiện các kỹ năng hoạt hình và tương tác.</p>
-                <a href="#" class="text-blue-300 hover:underline mt-2 inline-block">Xem chi tiết</a>
+    <div class="content">
+        <!-- About Me Page -->
+        <div class="page active" id="about">
+            <h1>About Me</h1>
+            <p>Hello! I'm a passionate web developer with expertise in creating modern, interactive user interfaces. I love combining design and technology to build beautiful, functional experiences.</p>
+            <p>With over 5 years of experience in front-end development, I specialize in HTML, CSS, JavaScript, and modern frameworks. My goal is to create intuitive interfaces that users love.</p>
+            <p>When I'm not coding, you can find me hiking, reading sci-fi novels, or experimenting with new recipes in the kitchen.</p>
+        </div>
+        
+        <!-- Projects Page -->
+        <div class="page" id="projects">
+            <h1>My Projects</h1>
+            <p>Here are some of my recent projects that showcase my skills and creativity:</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>E-commerce Platform</h3>
+                    <p>A full-featured online store with product filtering, cart functionality, and secure checkout.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Task Management App</h3>
+                    <p>A productivity application with drag-and-drop interface, team collaboration, and analytics.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Weather Dashboard</h3>
+                    <p>Real-time weather visualization with animated forecasts and location-based services.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Fitness Tracker</h3>
+                    <p>Mobile-first workout logging application with progress tracking and social features.</p>
+                </div>
             </div>
         </div>
+        
+        <!-- Contact Page -->
+        <div class="page" id="contact">
+            <h1>Get In Touch</h1>
+            <p>Have a project in mind or want to collaborate? Feel free to reach out!</p>
+            
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Your email">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" rows="5" placeholder="Your message"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
     </div>
-
-    <div id="contact" class="content-section">
-        <h1 class="text-4xl font-bold mb-4">Liên hệ với tôi</h1>
-        <p class="text-lg mb-4">Bạn có thể liên hệ với tôi qua các kênh sau:</p>
-        <ul class="list-none p-0 text-left mx-auto max-w-sm">
-            <li class="mb-3 flex items-center justify-center">
-                <span class="material-icons mr-2">email</span>
-                <a href="mailto:your.email@example.com" class="text-blue-300 hover:underline">your.email@example.com</a>
-            </li>
-            <li class="mb-3 flex items-center justify-center">
-                <span class="material-icons mr-2">phone</span>
-                <a href="tel:+1234567890" class="text-blue-300 hover:underline">+123 456 7890</a>
-            </li>
-            <li class="mb-3 flex items-center justify-center">
-                <span class="material-icons mr-2">linkedin</span>
-                <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-blue-300 hover:underline">LinkedIn Profile</a>
-            </li>
-            <li class="mb-3 flex items-center justify-center">
-                <span class="material-icons mr-2">code</span>
-                <a href="https://github.com/yourusername" target="_blank" class="text-blue-300 hover:underline">GitHub Profile</a>
-            </li>
-        </ul>
-        <p class="mt-6 text-base">Tôi mong muốn được nghe từ bạn!</p>
-    </div>
-
-    <!-- Thanh menu cố định ở đáy -->
-    <nav class="bottom-nav">
-        <div class="liquidGlass-effect"></div>
-        <div class="liquidGlass-shine"></div>
-        <div class="magnifying-bubble"></div> <!-- Bong bóng kính lúp di chuyển -->
-
-        <div class="nav-items-wrapper" id="navItemsWrapper">
-            <div class="nav-item" data-target="about-me">
+    
+    <!-- Liquid Glass Menu -->
+    <div class="menu-container">
+        <div class="liquidGlass-menu">
+            <div class="magnifier"></div>
+            <div class="liquid-drop"></div>
+            
+            <a class="menu-item active" data-page="about">
                 <span class="material-icons">person</span>
-                <span>About Me</span>
-            </div>
-            <div class="nav-item" data-target="projects">
-                <span class="material-icons">folder_open</span>
-                <span>Projects</span>
-            </div>
-            <div class="nav-item" data-target="contact">
-                <span class="material-icons">mail</span>
-                <span>Contact</span>
-            </div>
+                <span class="label">About</span>
+            </a>
+            <a class="menu-item" data-page="projects">
+                <span class="material-icons">work</span>
+                <span class="label">Projects</span>
+            </a>
+            <a class="menu-item" data-page="contact">
+                <span class="material-icons">email</span>
+                <span class="label">Contact</span>
+            </a>
         </div>
-    </nav>
+    </div>
 
     <script>
-        const navItemsWrapper = document.getElementById('navItemsWrapper');
-        const navItems = document.querySelectorAll('.nav-item');
-        const contentSections = document.querySelectorAll('.content-section');
-        const magnifyingBubble = document.querySelector('.magnifying-bubble');
-
-        let activeTab = 'about-me'; // Tab mặc định
-        let currentMagnifiedItem = null;
-        let animationFrameId = null;
-
-        // Hàm để hiển thị nội dung tab
-        function showContent(targetId) {
-            contentSections.forEach(section => {
-                section.classList.remove('active');
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            const magnifier = document.querySelector('.magnifier');
+            const liquidDrop = document.querySelector('.liquid-drop');
+            const pages = document.querySelectorAll('.page');
+            const menu = document.querySelector('.liquidGlass-menu');
+            let isDragging = false;
+            let currentActive = document.querySelector('.menu-item.active');
+            
+            // Set initial position of magnifier and liquid drop
+            updateActivePosition(currentActive);
+            
+            // Click/tap functionality
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Update magnifier and liquid drop position
+                    updateActivePosition(this);
+                    
+                    // Show corresponding page
+                    const pageId = this.getAttribute('data-page');
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === pageId) {
+                            page.classList.add('active');
+                        }
+                    });
+                    
+                    // Trigger haptic feedback on mobile
+                    if ('vibrate' in navigator) {
+                        navigator.vibrate(10);
+                    }
+                    
+                    currentActive = this;
+                });
             });
-            document.getElementById(targetId).classList.add('active');
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.target === targetId) {
-                    item.classList.add('active');
-                }
-            });
-            activeTab = targetId;
-        }
-
-        // Hàm rung nhẹ (Haptic feedback)
-        function vibratePhone() {
-            if (navigator.vibrate) {
-                navigator.vibrate(50); // Rung 50ms
+            
+            // Touch/mouse move functionality
+            menu.addEventListener('mousedown', startDrag);
+            menu.addEventListener('touchstart', startDrag);
+            
+            document.addEventListener('mousemove', handleDrag);
+            document.addEventListener('touchmove', handleDrag);
+            
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+            
+            // Hover effect for desktop
+            if (window.matchMedia("(hover: hover)").matches) {
+                menuItems.forEach(item => {
+                    item.addEventListener('mouseenter', function() {
+                        if (!isDragging) {
+                            magnifier.style.opacity = '1';
+                            magnifier.style.transform = `translate(-50%, -50%) scale(1)`;
+                            
+                            const rect = this.getBoundingClientRect();
+                            const centerX = rect.left + rect.width / 2;
+                            const centerY = rect.top + rect.height / 2;
+                            
+                            magnifier.style.left = `${centerX}px`;
+                            magnifier.style.top = `${centerY}px`;
+                        }
+                    });
+                    
+                    item.addEventListener('mouseleave', function() {
+                        if (!isDragging) {
+                            magnifier.style.opacity = '0';
+                            magnifier.style.transform = `translate(-50%, -50%) scale(0)`;
+                        }
+                    });
+                });
             }
-        }
-
-        // Cập nhật vị trí và kích thước bong bóng kính lúp
-        function updateMagnifyingBubble(clientX, clientY) {
-            let closestItem = null;
-            let minDistance = Infinity;
-
-            navItems.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                const itemCenterX = rect.left + rect.width / 2;
-                const itemCenterY = rect.top + rect.height / 2;
-
-                const distance = Math.sqrt(
-                    Math.pow(clientX - itemCenterX, 2) +
-                    Math.pow(clientY - itemCenterY, 2)
-                );
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestItem = item;
+            
+            function startDrag(e) {
+                isDragging = true;
+                magnifier.style.opacity = '1';
+                handleDrag(e);
+            }
+            
+            function handleDrag(e) {
+                if (!isDragging) return;
+                
+                e.preventDefault();
+                
+                let clientX, clientY;
+                
+                if (e.type === 'touchmove') {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
                 }
-            });
-
-            if (closestItem) {
-                const rect = closestItem.getBoundingClientRect();
-                const navRect = navItemsWrapper.getBoundingClientRect();
-
-                // Tính toán vị trí tương đối của bong bóng trong navItemsWrapper
-                const bubbleX = (rect.left + rect.width / 2) - navRect.left;
-                const bubbleY = (rect.top + rect.height / 2) - navRect.top;
-
-                magnifyingBubble.style.left = `${bubbleX}px`;
-                magnifyingBubble.style.top = `${bubbleY}px`;
-
-                // Kích thước bong bóng dựa trên kích thước item
-                const scaleFactor = 1.3; // Phóng đại 30%
-                magnifyingBubble.style.width = `${rect.width * scaleFactor}px`;
-                magnifyingBubble.style.height = `${rect.height * scaleFactor}px`;
-
-                // Phóng đại icon và text của item gần nhất
-                navItems.forEach(item => {
-                    if (item === closestItem) {
-                        item.style.transform = `scale(${scaleFactor})`;
-                        item.querySelector('.material-icons').style.fontSize = `${28 * scaleFactor}px`;
-                        vibratePhone(); // Rung khi phóng đại trên mobile
-                    } else {
-                        item.style.transform = 'scale(1)';
-                        item.querySelector('.material-icons').style.fontSize = '28px';
+                
+                // Update magnifier position
+                magnifier.style.left = `${clientX}px`;
+                magnifier.style.top = `${clientY}px`;
+                magnifier.style.transform = `translate(-50%, -50%) scale(1)`;
+                
+                // Find the closest menu item
+                let closestItem = null;
+                let minDistance = Infinity;
+                
+                menuItems.forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(clientX - centerX, 2) + 
+                        Math.pow(clientY - centerY, 2)
+                    );
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestItem = item;
                     }
                 });
-
-                currentMagnifiedItem = closestItem;
-                magnifyingBubble.classList.add('active');
-            } else {
-                // Nếu không có item nào gần, ẩn bong bóng và reset scale
-                magnifyingBubble.classList.remove('active');
-                navItems.forEach(item => {
-                    item.style.transform = 'scale(1)';
-                    item.querySelector('.material-icons').style.fontSize = '28px';
-                });
-                currentMagnifiedItem = null;
+                
+                // Update liquid drop position
+                if (closestItem) {
+                    const rect = closestItem.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    liquidDrop.style.left = `${centerX}px`;
+                    liquidDrop.style.top = `${centerY}px`;
+                    liquidDrop.style.transform = `translate(-50%, -50%) scale(1)`;
+                    
+                    // Highlight the closest item
+                    menuItems.forEach(item => {
+                        if (item === closestItem) {
+                            item.classList.add('active');
+                            item.querySelector('.material-icons').style.transform = 'scale(1.2)';
+                            item.querySelector('.label').style.opacity = '1';
+                            item.querySelector('.label').style.fontWeight = '600';
+                        } else {
+                            item.classList.remove('active');
+                            item.querySelector('.material-icons').style.transform = 'scale(1)';
+                            item.querySelector('.label').style.opacity = '0.8';
+                            item.querySelector('.label').style.fontWeight = '500';
+                        }
+                    });
+                }
             }
-        }
-
-        // Reset hiệu ứng phóng đại
-        function resetMagnification() {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-                animationFrameId = null;
+            
+            function endDrag(e) {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                
+                // Find the currently active item
+                const activeItem = document.querySelector('.menu-item.active');
+                
+                if (activeItem && activeItem !== currentActive) {
+                    // Show corresponding page
+                    const pageId = activeItem.getAttribute('data-page');
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === pageId) {
+                            page.classList.add('active');
+                        }
+                    });
+                    
+                    // Trigger haptic feedback on mobile
+                    if ('vibrate' in navigator) {
+                        navigator.vibrate(10);
+                    }
+                    
+                    // Shake effect
+                    activeItem.classList.add('shake');
+                    setTimeout(() => {
+                        activeItem.classList.remove('shake');
+                    }, 200);
+                    
+                    currentActive = activeItem;
+                }
+                
+                // Update magnifier and liquid drop to active position
+                updateActivePosition(activeItem);
             }
-            magnifyingBubble.classList.remove('active');
-            navItems.forEach(item => {
-                item.style.transform = 'scale(1)';
-                item.querySelector('.material-icons').style.fontSize = '28px';
-            });
-            currentMagnifiedItem = null;
-        }
-
-        // Xử lý sự kiện chuột (Desktop)
-        navItemsWrapper.addEventListener('mousemove', (e) => {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
+            
+            function updateActivePosition(item) {
+                if (!item) return;
+                
+                const rect = item.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                liquidDrop.style.left = `${centerX}px`;
+                liquidDrop.style.top = `${centerY}px`;
+                liquidDrop.style.transform = `translate(-50%, -50%) scale(1)`;
+                
+                if (!isDragging) {
+                    magnifier.style.left = `${centerX}px`;
+                    magnifier.style.top = `${centerY}px`;
+                    
+                    if (window.matchMedia("(hover: hover)").matches) {
+                        magnifier.style.opacity = '0';
+                        magnifier.style.transform = `translate(-50%, -50%) scale(0)`;
+                    } else {
+                        magnifier.style.opacity = '1';
+                        magnifier.style.transform = `translate(-50%, -50%) scale(1)`;
+                    }
+                }
             }
-            animationFrameId = requestAnimationFrame(() => {
-                updateMagnifyingBubble(e.clientX, e.clientY);
-            });
-        });
-
-        navItemsWrapper.addEventListener('mouseleave', () => {
-            resetMagnification();
-        });
-
-        // Xử lý sự kiện chạm (Mobile)
-        navItemsWrapper.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Ngăn hành vi cuộn mặc định
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
-            animationFrameId = requestAnimationFrame(() => {
-                updateMagnifyingBubble(e.touches[0].clientX, e.touches[0].clientY);
-            });
-        }, { passive: false }); // Sử dụng { passive: false } để có thể gọi preventDefault
-
-        navItemsWrapper.addEventListener('touchmove', (e) => {
-            e.preventDefault(); // Ngăn hành vi cuộn mặc định
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
-            animationFrameId = requestAnimationFrame(() => {
-                updateMagnifyingBubble(e.touches[0].clientX, e.touches[0].clientY);
-            });
-        }, { passive: false });
-
-        navItemsWrapper.addEventListener('touchend', () => {
-            if (currentMagnifiedItem) {
-                showContent(currentMagnifiedItem.dataset.target);
-            }
-            resetMagnification();
-        });
-
-        // Xử lý sự kiện click (Desktop)
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                showContent(item.dataset.target);
-                resetMagnification(); // Đảm bảo reset sau khi click
-            });
-        });
-
-        // Khởi tạo tab mặc định khi tải trang
-        document.addEventListener('DOMContentLoaded', () => {
-            showContent(activeTab);
         });
     </script>
 </body>
