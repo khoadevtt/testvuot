@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Giới Thiệu Bản Thân</title>
+    <!-- Tải Font Inter từ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tải Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Thiết lập cơ bản */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2a0050, #000000); /* Nền gradient tối */
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Ngăn cuộn ngang */
+            position: relative; /* Cho các hiệu ứng nền */
+        }
+
+        /* Hiệu ứng bong bóng nền */
+        .background-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05); /* Bong bóng trong suốt */
+            border-radius: 50%;
+            animation: floatBubbles 15s infinite ease-in-out;
+        }
+
+        .bubble:nth-child(1) { width: 60px; height: 60px; left: 10%; top: 20%; animation-delay: 0s; }
+        .bubble:nth-child(2) { width: 80px; height: 80px; left: 30%; top: 50%; animation-delay: 2s; }
+        .bubble:nth-child(3) { width: 40px; height: 40px; left: 60%; top: 10%; animation-delay: 4s; }
+        .bubble:nth-child(4) { width: 70px; height: 70px; left: 80%; top: 70%; animation-delay: 6s; }
+        .bubble:nth-child(5) { width: 50px; height: 50px; left: 20%; top: 80%; animation-delay: 8s; }
+        .bubble:nth-child(6) { width: 90px; height: 90px; left: 45%; top: 30%; animation-delay: 10s; }
+        .bubble:nth-child(7) { width: 65px; height: 65px; left: 5%; top: 60%; animation-delay: 12s; }
+        .bubble:nth-child(8) { width: 75px; height: 75px; left: 90%; top: 40%; animation-delay: 14s; }
+
+        @keyframes floatBubbles {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+            50% { transform: translateY(-20px) translateX(20px) scale(1.1); opacity: 0.7; }
+            100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+        }
+
+        /* Vùng nội dung chính */
+        #app {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-bottom: 100px; /* Đảm bảo không bị che bởi nav bar */
+            z-index: 1; /* Đảm bảo nội dung nằm trên bong bóng */
+            position: relative;
+        }
+
+        #content {
+            background: rgba(255, 255, 255, 0.05); /* Nền trong suốt cho nội dung */
+            backdrop-filter: blur(10px); /* Hiệu ứng mờ nhẹ */
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+            transition: all 0.5s ease-in-out; /* Chuyển đổi mượt mà khi đổi nội dung */
+            min-height: 300px; /* Đảm bảo chiều cao tối thiểu */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #content h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        #content p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #c0c0c0;
+            margin-bottom: 20px;
+        }
+
+        #content .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card h3 {
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .project-card p {
+            font-size: 0.95em;
+            color: #a0a0a0;
+            margin-bottom: 15px;
+        }
+
+        .project-card a {
+            display: inline-block;
+            background: rgba(0, 150, 255, 0.6);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .project-card a:hover {
+            background: rgba(0, 180, 255, 0.8);
+        }
+
+        .contact-info p {
+            margin-bottom: 15px;
+        }
+
+        .contact-info a {
+            color: #7dd3fc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: #38bdf8;
+        }
+
+        /* Thanh menu cố định ở đáy màn hình */
+        #bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px; /* Giới hạn chiều rộng cho thanh menu */
+            background: rgba(255, 255, 255, 0.1); /* Kính trong suốt */
+            backdrop-filter: blur(20px); /* Hiệu ứng mờ */
+            border-radius: 30px; /* Bo tròn */
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Đổ bóng nhẹ */
+            border: 1px solid rgba(255, 255, 255, 0.18); /* Viền mỏng */
+            z-index: 1000; /* Đảm bảo nằm trên cùng */
+            touch-action: none; /* Ngăn hành vi cuộn mặc định trên di động */
+        }
+
+        #bottom-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        #bottom-nav li {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 0;
+            color: #fff;
+            text-decoration: none;
+            transition: transform 0.1s ease-out, color 0.3s ease; /* Chuyển đổi mượt mà */
+            position: relative;
+            z-index: 1; /* Đảm bảo icon/label nằm trên nền */
+        }
+
+        #bottom-nav a i {
+            font-size: 28px; /* Kích thước icon lớn hơn */
+            margin-bottom: 4px;
+            transition: font-size 0.1s ease-out;
+        }
+
+        #bottom-nav a span {
+            font-size: 14px; /* Kích thước label */
+            opacity: 1;
+            transition: opacity 0.1s ease-out, font-size 0.1s ease-out;
+            white-space: nowrap; /* Ngăn ngắt dòng */
+        }
+
+        /* Hiệu ứng nền cho tab được chọn */
+        #bottom-nav a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2); /* Nền sáng hơn khi active */
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+            z-index: 0;
+        }
+
+        #bottom-nav a.active::before {
+            width: 60px; /* Kích thước nền khi active */
+            height: 60px;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #bottom-nav a.active {
+            color: #8be9fd; /* Màu chữ khi active */
+        }
+
+        /* Media queries cho thiết bị nhỏ hơn (mobile) */
+        @media (max-width: 768px) {
+            #bottom-nav {
+                width: 95%;
+                bottom: 10px;
+                padding: 8px 0;
+            }
+
+            #bottom-nav a i {
+                font-size: 24px;
+            }
+
+            #bottom-nav a span {
+                font-size: 12px;
+            }
+
+            #content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            #content h1 {
+                font-size: 2em;
+            }
+
+            #content p {
+                font-size: 1em;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr; /* Một cột trên mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <div id="app">
+        <div id="content">
+            <!-- Nội dung sẽ được tải bởi JavaScript -->
+        </div>
+    </div>
+
+    <nav id="bottom-nav">
+        <ul>
+            <li data-tab="about">
+                <a href="#about" class="nav-link active">
+                    <i class="material-icons">person</i>
+                    <span>Về tôi</span>
+                </a>
+            </li>
+            <li data-tab="projects">
+                <a href="#projects" class="nav-link">
+                    <i class="material-icons">folder_open</i>
+                    <span>Dự án</span>
+                </a>
+            </li>
+            <li data-tab="contact">
+                <a href="#contact" class="nav-link">
+                    <i class="material-icons">mail_outline</i>
+                    <span>Liên hệ</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <script>
+        const contentDiv = document.getElementById('content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const bottomNav = document.getElementById('bottom-nav');
+        let activeTab = 'about'; // Tab mặc định
+
+        // Định nghĩa nội dung cho từng tab
+        const tabContents = {
+            'about': `
+                <h1>Chào bạn! Tôi là [Tên của bạn]</h1>
+                <p>Tôi là một nhà phát triển web đam mê với kinh nghiệm trong việc xây dựng các ứng dụng web hiện đại và tương tác. Tôi thích biến ý tưởng thành hiện thực thông qua mã.</p>
+                <p>Sở thích của tôi bao gồm tìm hiểu công nghệ mới, đọc sách và chơi game.</p>
+                <p>Hãy cùng khám phá các dự án của tôi hoặc liên hệ nếu bạn có bất kỳ câu hỏi nào!</p>
+            `,
+            'projects': `
+                <h1>Dự án của tôi</h1>
+                <p>Dưới đây là một số dự án mà tôi đã thực hiện:</p>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <h3>Dự án 1: Ứng dụng Quản lý Nhiệm vụ</h3>
+                        <p>Một ứng dụng web đầy đủ tính năng để quản lý các nhiệm vụ cá nhân và nhóm, được xây dựng với React và Node.js.</p>
+                        <a href="#" target="_blank">Xem chi tiết</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Dự án 2: Trang web Thương mại điện tử</h3>
+                        <p>Một trang web thương mại điện tử responsive với giỏ hàng, thanh toán và quản lý sản phẩm, sử dụng Vue.js và Firebase.</p>
+                        <a href="#" target="_blank">Xem chi tiết</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>Dự án 3: Game Đố vui Trực tuyến</h3>
+                        <p>Một trò chơi đố vui tương tác cho nhiều người chơi, phát triển bằng Vanilla JavaScript và WebSockets.</p>
+                        <a href="#" target="_blank">Xem chi tiết</a>
+                    </div>
+                </div>
+            `,
+            'contact': `
+                <h1>Liên hệ</h1>
+                <p>Bạn có thể liên hệ với tôi qua các kênh sau:</p>
+                <div class="contact-info">
+                    <p><i class="material-icons">email</i> Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+                    <p><i class="material-icons">phone</i> Điện thoại: <a href="tel:+84123456789">+84 123 456 789</a></p>
+                    <p><i class="material-icons">linkedin</i> LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
+                    <p><i class="material-icons">code</i> GitHub: <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></p>
+                </div>
+            `
+        };
+
+        // Hàm để hiển thị nội dung tab
+        function renderContent(tabName) {
+            contentDiv.style.opacity = 0; // Làm mờ nội dung cũ
+            setTimeout(() => {
+                contentDiv.innerHTML = tabContents[tabName];
+                contentDiv.style.opacity = 1; // Hiển thị nội dung mới
+            }, 200); // Chờ hiệu ứng mờ hoàn tất
+        }
+
+        // Khởi tạo nội dung tab đầu tiên
+        renderContent(activeTab);
+
+        let currentAnimationFrame = null; // Biến để lưu trữ requestAnimationFrame ID
+
+        // Hàm xử lý hiệu ứng kính lúp
+        function handleMagnify(clientX) {
+            if (currentAnimationFrame) {
+                cancelAnimationFrame(currentAnimationFrame);
+            }
+
+            currentAnimationFrame = requestAnimationFrame(() => {
+                const navRect = bottomNav.getBoundingClientRect();
+                const navCenterX = navRect.left + navRect.width / 2;
+
+                navLinks.forEach(link => {
+                    const linkRect = link.getBoundingClientRect();
+                    const linkCenterX = linkRect.left + linkRect.width / 2;
+
+                    // Tính khoảng cách từ con trỏ/ngón tay đến tâm của tab
+                    const distance = Math.abs(clientX - linkCenterX);
+
+                    // Sử dụng hàm mũ để tạo hiệu ứng phóng đại mượt mà
+                    // Max scale: 1.3, Min scale: 1.0
+                    // Khoảng cách ảnh hưởng: 150px
+                    const maxDistance = 150;
+                    const normalizedDistance = Math.min(distance, maxDistance) / maxDistance;
+                    const scale = 1.3 - 0.3 * Math.pow(normalizedDistance, 2); // Hàm bậc 2 để giảm dần
+
+                    // Áp dụng scale cho icon và label
+                    link.style.transform = `scale(${scale})`;
+
+                    // Điều chỉnh kích thước icon và label dựa trên scale
+                    const icon = link.querySelector('i');
+                    const label = link.querySelector('span');
+                    if (icon) icon.style.fontSize = `${28 * scale}px`; // Kích thước icon mặc định 28px
+                    if (label) label.style.fontSize = `${14 * scale}px`; // Kích thước label mặc định 14px
+                });
+            });
+        }
+
+        // Hàm reset hiệu ứng phóng đại
+        function resetMagnify() {
+            if (currentAnimationFrame) {
+                cancelAnimationFrame(currentAnimationFrame);
+                currentAnimationFrame = null;
+            }
+            navLinks.forEach(link => {
+                link.style.transform = 'scale(1)';
+                const icon = link.querySelector('i');
+                const label = link.querySelector('span');
+                if (icon) icon.style.fontSize = '28px';
+                if (label) label.style.fontSize = '14px';
+            });
+        }
+
+        // Hàm xử lý chọn tab khi thả tay/chuột
+        function handleSelect(clientX) {
+            let closestLink = null;
+            let minDistance = Infinity;
+
+            navLinks.forEach(link => {
+                const linkRect = link.getBoundingClientRect();
+                const linkCenterX = linkRect.left + linkRect.width / 2;
+                const distance = Math.abs(clientX - linkCenterX);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestLink = link;
+                }
+            });
+
+            if (closestLink) {
+                // Xóa lớp 'active' khỏi tất cả các liên kết
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Thêm lớp 'active' vào liên kết được chọn
+                closestLink.classList.add('active');
+                // Cập nhật nội dung
+                activeTab = closestLink.parentElement.dataset.tab;
+                renderContent(activeTab);
+            }
+            resetMagnify(); // Reset hiệu ứng phóng đại sau khi chọn
+        }
+
+        // Xử lý sự kiện chuột (cho PC)
+        bottomNav.addEventListener('mousemove', (e) => {
+            handleMagnify(e.clientX);
+        });
+
+        bottomNav.addEventListener('mouseleave', () => {
+            resetMagnify();
+        });
+
+        bottomNav.addEventListener('mouseup', (e) => {
+            handleSelect(e.clientX);
+        });
+
+        // Xử lý sự kiện chạm (cho Mobile)
+        bottomNav.addEventListener('touchstart', (e) => {
+            // Ngăn cuộn trang khi chạm vào nav bar
+            e.preventDefault();
+            handleMagnify(e.touches[0].clientX);
+        }, { passive: false }); // `passive: false` để `preventDefault` hoạt động
+
+        bottomNav.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Ngăn cuộn trang khi vuốt trên nav bar
+            handleMagnify(e.touches[0].clientX);
+        }, { passive: false });
+
+        bottomNav.addEventListener('touchend', (e) => {
+            // `e.changedTouches[0].clientX` lấy vị trí ngón tay khi nhấc lên
+            // Nếu không có `changedTouches`, có thể dùng vị trí cuối cùng của `touchmove`
+            // Hoặc đơn giản là chọn tab gần nhất với vị trí cuối cùng của `handleMagnify`
+            // Để đơn giản, ta sẽ gọi handleSelect với vị trí cuối cùng của `touchmove`
+            // hoặc dựa vào tab đang được phóng đại nhất.
+            // Để chính xác hơn, chúng ta cần lưu trữ vị trí cuối cùng của touchmove.
+            // Tuy nhiên, với logic hiện tại, nó sẽ chọn tab được phóng đại nhất ngay trước khi touchend.
+            // Một cách tiếp cận đơn giản hơn là giả định tab được phóng đại nhất khi `touchend` là tab muốn chọn.
+            // Để làm điều này, chúng ta cần một cách để xác định tab nào đang được phóng đại nhất.
+            // Hoặc, lấy clientX từ `touchend` nếu có.
+            if (e.changedTouches && e.changedTouches.length > 0) {
+                handleSelect(e.changedTouches[0].clientX);
+            } else {
+                // Fallback nếu không có changedTouches (ít xảy ra)
+                // Có thể lấy vị trí của tab đang active hoặc tab gần nhất với tâm nav
+                const navRect = bottomNav.getBoundingClientRect();
+                handleSelect(navRect.left + navRect.width / 2);
+            }
+        });
+
+        // Xử lý sự kiện click cho các liên kết (fallback cho trường hợp không có touch/mouse move)
+        // và để đảm bảo chuyển tab khi click trực tiếp
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Ngăn hành vi mặc định của thẻ a
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                activeTab = link.parentElement.dataset.tab;
+                renderContent(activeTab);
+                resetMagnify(); // Đảm bảo reset hiệu ứng khi click
+            });
+        });
+
+        // Cập nhật URL hash khi đổi tab để hỗ trợ back/forward button của trình duyệt
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1); // Lấy hash bỏ dấu #
+            if (tabContents[hash]) {
+                navLinks.forEach(link => {
+                    if (link.parentElement.dataset.tab === hash) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                activeTab = hash;
+                renderContent(activeTab);
+            }
+        });
+
+        // Kiểm tra hash khi tải trang lần đầu
+        if (window.location.hash) {
+            const initialHash = window.location.hash.substring(1);
+            if (tabContents[initialHash]) {
+                navLinks.forEach(link => {
+                    if (link.parentElement.dataset.tab === initialHash) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                activeTab = initialHash;
+                renderContent(activeTab);
+            }
+        }
+    </script>
+</body>
+</html>
